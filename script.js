@@ -4,9 +4,11 @@ const Mesa = document.getElementById('mesa');
 const Soma = document.getElementById('soma');
 const Jogador = document.getElementById('jogador');
 const PC = document.getElementById('PC');
+const comprar = document.getElementById('comprar');
+const parar = document.getElementById('parar');
 
-var somatoria = 0;
-
+var somaPC = 0;
+var somaJogador = 0;
 
 // A - 0 | 2 - 1 | 3 - 2 | 4 - 3 | 5 - 4 | 6 - 5 | 7 - 6 | 8 - 7 | 9 - 8 | 10 - 9 | J - 10 | Q - 11 | K - 12 |
 var qtde = [4,4,4,4,4,4,4,4,4,4,4,4,4];
@@ -46,19 +48,19 @@ function addCarta(Numero){
 }
 
 function escurecerCartas(){
-    var darkCarta0 = document.getElementsByClassName("carta")[0];
-    var darkCarta1 = document.getElementsByClassName("carta")[1];
-    var darkNum0 = document.getElementsByClassName("valor")[0];
-    var darkNum1 = document.getElementsByClassName("valor")[1];
+    const darkCarta = PC.getElementsByClassName('carta');
+    const darkNum = PC.getElementsByClassName('valor');
 
-    darkNum0.style.display = "none";
-    darkNum1.style.display = "none";
+    for(let i = 0; i < darkCarta.length; i++){
+        darkCarta[i].style.background = "red";
+    }
 
-    darkCarta0.style.backgroundColor = "red";
-    darkCarta1.style.backgroundColor = "red";
+    for(let i = 0; i < darkNum.length; i++){
+        darkNum[i].style.display = "none";
+    }
 }
 
-function calcularSoma(){
+function calcularSomaJogador(){
     let qtdeA = 0; 
     let parcela = 0;   
 
@@ -78,7 +80,67 @@ function calcularSoma(){
         qtdeA--;
     }
 
-    somatoria = parcela;
+    somaJogador = parcela;
+}
+
+function calcularSomaPC(){
+    let qtdeA = 0;
+    let parcela = 0;
+
+    for(let i=0; i < PC.childElementCount; i++) {
+
+        let valor = valores[converter.indexOf(PC.children[i].firstChild.innerHTML)];
+
+        if(valor == 11){
+            qtdeA++;
+        }
+
+        parcela += valor;
+    }
+
+    somaPC = parcela;
+}
+
+function verificarSoma(){
+    if (somaJogador == 21) {
+        setTimeout(function() {
+            alert('Parabéns, você venceu!');
+            reiniciar();
+        }, 1000);
+    }
+
+    if (somaPC == 21) {
+        setTimeout(function() {
+            alert('Perdeu!');
+            reiniciar();
+        }, 1000); 
+    }
+
+    if (somaJogador > 21 && somaPC < 21) {
+        setTimeout(function() {
+            alert('Perdeu!');
+            reiniciar();
+        }, 1000); 
+    }
+
+    if (somaJogador < 21 && somaPC > 21) {
+        setTimeout(function() {
+            alert('Parabéns, você venceu!');
+            reiniciar();
+        }, 1000);
+    }
+
+    if (somaJogador > 21 && somaPC > 21) {
+        setTimeout(function() {
+            alert('Não houve vencedores!');
+            reiniciar();
+        }, 1000); 
+    }
+}
+
+function reiniciar() {
+    window.location.href = window.location.href;
+    location.reload(true);
 }
 
 iniciarJogo.addEventListener('click', () => {
@@ -89,14 +151,45 @@ iniciarJogo.addEventListener('click', () => {
     PC.appendChild(addCarta(indexDisponivel()));
     PC.appendChild(addCarta(indexDisponivel()));
 
+    calcularSomaPC();
     escurecerCartas();
 
     Jogador.appendChild(addCarta(indexDisponivel()));
     Jogador.appendChild(addCarta(indexDisponivel()));
 
-    calcularSoma();
+    calcularSomaJogador();
 
-    soma.textContent = `Soma: ${somatoria}`;
+    Soma.textContent = `Soma: ${somaJogador}`;
+    
+    verificarSoma();
+});
+
+comprar.addEventListener('click', () => {
+    Jogador.appendChild(addCarta(indexDisponivel()));
+
+    calcularSomaJogador();
+    Soma.textContent = `Soma: ${somaJogador}`;
+
+    PC.appendChild(addCarta(indexDisponivel()));
+
+    calcularSomaPC();
+    escurecerCartas();
+
+    verificarSoma();
+});
+
+parar.addEventListener('click', () => {
+    if (somaJogador < 21 && somaPC < 21) {
+        if (somaJogador > somaPC) {
+            alert('Parabéns, você venceu!');
+            reiniciar();
+        }
+
+        if (somaJogador < somaPC) {
+            alert('Perdeu!');
+            reiniciar();
+        }
+    }
 });
 
 
