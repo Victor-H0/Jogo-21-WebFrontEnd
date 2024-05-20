@@ -1,7 +1,6 @@
 #corpo{
     background-color: lightblue;
     height: 100%;
-
 }
 #modal {
     display: flex;
@@ -75,6 +74,17 @@
         color: #FFF;
         cursor: pointer;
     }
+
+    #iniciar-jogo{
+        padding: 10px 20px;
+        font-size: 15px;
+        text-decoration: none;
+        background-color: darkcyan;
+        font-weight: 500;
+        border-radius: 25px;
+        color: #FFF;
+        cursor: pointer;
+    }
     
     #jogador{
         display: flex;
@@ -105,9 +115,37 @@
     }
 
 
-    #soma{
+    #TotalJog{
         display: none;
-        margin-top: 170px;
+        margin-top: 115px;
         font-size: xxx-large;
+    }
+
+    #TotalPC{
+        height: 55px;
+        font-size: xxx-large;
+    }
+
+    #nomePC{
+        display: none;
+        position:absolute;
+        font-size: xx-large;
+        width: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 63px;
+        text-align: center;
+        /* margin: 0 836px; */
+    }
+
+    #nomeJogador{
+        display: none;
+        position: absolute;
+        font-size: xx-large;
+        width: 100%;
+        left: 0;
+        right: 0;
+        text-align: center;
+        /* margin: 0 868.4px; */
     }
 
